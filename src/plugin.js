@@ -24,7 +24,7 @@
 		return trackingIds;
 	}
 
-	$global.ConsentCookie.on('connection', function ($payload) {
+	$global.ConsentCookie.on('consent', function ($payload) {
 		if ($payload.id === 'ga' && $payload.state === 'disabled') {
 
 			// Disabled all active analytic trackers
