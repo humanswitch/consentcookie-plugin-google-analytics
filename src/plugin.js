@@ -25,20 +25,24 @@
 	}
 
 	$global.ConsentCookie.on('consent', function ($payload) {
-		if ($payload.id === 'ga' && $payload.state === 'disabled') {
-
-			// Disabled all active analytic trackers
-			getTrackingIds()
-				.forEach(function ($trackingId) {
-					$global[GA_PROP_DISABLE_PREFIX + $trackingId] = true;
-				});
-		} else if ($payload.id === 'ga' && $payload.state === 'enabled') {
-
-			// Remove the disabled property for all analytic trackers
-			getTrackingIds()
-				.forEach(function ($trackingId) {
-					delete $global[GA_PROP_DISABLE_PREFIX + $trackingId];
-				});
+		 if ($payload.id === 'ga' && $global.ga) {
+			$global.ga(function() {
+				if ($payload.state === 'disabled') {
+		
+					// Disabled all active analytic trackers
+					getTrackingIds()
+						.forEach(function ($trackingId) {
+							$global[GA_PROP_DISABLE_PREFIX + $trackingId] = true;
+						});
+				} else if ($payload.state === 'enabled') {
+		
+					// Remove the disabled property for all analytic trackers
+					getTrackingIds()
+						.forEach(function ($trackingId) {
+							delete $global[GA_PROP_DISABLE_PREFIX + $trackingId];
+						});
+				}
+			} );
 		}
 	});
 
